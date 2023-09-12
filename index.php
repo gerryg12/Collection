@@ -9,7 +9,7 @@
     
 <?php
 
-use Collection\Monitors\Models;
+use Collection\Monitors\MonitorModels;
 
 require_once 'vendor/autoload.php';
 
@@ -17,17 +17,13 @@ require_once 'vendor/autoload.php';
 $db = new PDO('mysql:host=db; dbname=collection', 'root', 'password');
 $db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 
-$model = new Models($db);
+$model = new MonitorModels($db);
 
-$monitors = ($model->getAllProducts());
+$monitors = $model->getAllMonitors();
 
 foreach ($monitors as $monitor) {
     echo "$monitor->make\n"."$monitor->model\n".$monitor->commissioned."<br>";
-    // echo $monitor->model."<br>";
 }
-
-// echo '<pre>';
-// var_dump($model->getAllProducts());
 
 ?>
 

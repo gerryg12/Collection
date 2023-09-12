@@ -4,7 +4,7 @@ namespace Collection\Monitors;
 
 // commissioned datatype?
 
-readonly class Monitors
+readonly class Monitor
 {
     public int $id;
     public string $make;

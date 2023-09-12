@@ -2,10 +2,10 @@
 
 namespace Collection\Monitors;
 
-use Collection\Monitors\Monitors;
+use Collection\Monitors\Monitor;
 use PDO;
 
-class Models
+class MonitorModels
 {
     private PDO $db;
 
@@ -15,7 +15,7 @@ class Models
     }
     
     
-    public function getAllProducts(): array
+    public function getAllMonitors(): array
     {
         $query = $this->db->prepare("SELECT * FROM `monitors`;");
 
@@ -23,19 +23,19 @@ class Models
 
         $data = $query->fetchAll();
 
-        $products = []; // We define an empty array to contain the result
+        $monitors = []; // We define an empty array to contain the result
 
-        foreach ($data as $productData) {
+        foreach ($data as $monitorData) {
             // For each productData, we instantiate a Product entity
             // add it into the products array
-            $products[] = new Monitors(
-                $productData['id'],
-                $productData['make'],
-                $productData['model'],
-                $productData['commissioned']
+            $monitors[] = new Monitor(
+                $monitorData['id'],
+                $monitorData['make'],
+                $monitorData['model'],
+                $monitorData['commissioned']
             );
         }
         // Return the array of Product objects
-        return $products;
+        return $monitors;
     }
 }
