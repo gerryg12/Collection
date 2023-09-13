@@ -38,4 +38,17 @@ class MonitorModels
         // Return the array of Product objects
         return $monitors;
     }
+
+
+    public function insertNewMonitor(string $make, string $model, string $commissioned): Void
+    {
+        $query = $this->db->prepare("INSERT INTO `monitors` (`make`, `model`, `commissioned`) 
+        VALUES(:make, :model, :commissioned);");
+
+        $query->execute([
+            'make' => $make,
+            'model' => $model,
+            'commissioned' => $commissioned
+        ]);
+    }
 }
