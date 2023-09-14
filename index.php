@@ -24,7 +24,7 @@
     $monitors = $model->getAllMonitors();
 
     foreach ($monitors as $monitor) {
-        echo "$monitor->make\n" . "$monitor->model\n" . $monitor->commissioned . "<br>";
+        echo "$monitor->id\n" . "$monitor->make\n" . "$monitor->model\n" . $monitor->commissioned . "<br>";
     }
 
     ?>
@@ -36,6 +36,11 @@
         <input type="text" id="model" name="model">
         <label for="commissioned">Commissioned Date: e.g. 2009-01-23:</label>
         <input type="text" id="commissioned" name="commissioned"><br>
+        <input type="submit" value="Submit">
+    </form>
+    <form method="POST">
+        <label for="id">Delete ID:</label>
+        <input type="text" id="id" name="id">
         <input type="submit" value="Submit">
     </form>
 
@@ -52,6 +57,8 @@
             echo "Make is too long";
             $valid = false;
         }
+    } else {
+        $valid = false;
     }
 
     if (isset($_POST['model'])) {
@@ -63,6 +70,8 @@
             echo "Model is too long";
             $valid = false;
         }
+    } else {
+        $valid = false;
     }
 
     if (isset($_POST['commissioned'])) {
@@ -77,6 +86,8 @@
             echo "Date format invalid";
             $valid = false;
         }
+    } else {
+        $valid = false;
     }
 
     // $iputtedModel = $_POST['model'];
@@ -90,6 +101,30 @@
 
 
     ?>
+
+    <?php
+
+    $validDelete = true;
+    if (isset($_POST['id'])) {
+        $inputtedId = $_POST['id'];
+        if (strlen($inputtedId) == 0) {
+            echo "no ID inputted";
+            $validDelete = false;
+        } elseif (strlen($inputtedId) > 4) {
+            echo "ID is too long";
+            $validDelete = false;
+        }
+    }
+
+    var_dump($_POST);
+    if ($validDelete == true) {
+        $removeMonitor = new MonitorModels($db);
+        $removeMonitor->removeMonitor($inputtedId);
+    } else {
+        echo "Not all info correct to delete";
+    }
+    ?>
+
 </body>
 
 </html>

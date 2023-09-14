@@ -13,11 +13,11 @@ class MonitorModels
     {
         $this->db = $db;
     }
-    
-    
+
+
     public function getAllMonitors(): array
     {
-        $query = $this->db->prepare("SELECT * FROM `monitors`;");
+        $query = $this->db->prepare("SELECT * FROM `monitors` WHERE `deleted`=0;");
 
         $query->execute();
 
@@ -32,7 +32,8 @@ class MonitorModels
                 $monitorData['id'],
                 $monitorData['make'],
                 $monitorData['model'],
-                $monitorData['commissioned']
+                $monitorData['commissioned'],
+                $monitorData['deleted']
             );
         }
         // Return the array of Product objects
@@ -49,6 +50,15 @@ class MonitorModels
             'make' => $make,
             'model' => $model,
             'commissioned' => $commissioned
+        ]);
+    }
+
+    public function removeMonitor(int $id): void
+    {
+        $query = $this->db->prepare("UPDATE `monitors` SET `deleted`='1' WHERE `id`=:id;");
+
+        $query->execute([
+            'id' => $id,
         ]);
     }
 }
