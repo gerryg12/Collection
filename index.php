@@ -34,18 +34,23 @@
         <input type="text" id="make" name="make">
         <label for="model">Model:</label>
         <input type="text" id="model" name="model">
-        <label for="commissioned">Commissioned:</label>
+        <label for="commissioned">Commissioned Date: e.g. 2009-01-23:</label>
         <input type="text" id="commissioned" name="commissioned"><br>
         <input type="submit" value="Submit">
     </form>
 
     <?php
+
+    $valid = true;
+
     if (isset($_POST['make'])) {
         $inputtedMake = $_POST['make'];
         if (strlen($inputtedMake) == 0) {
             echo "no make inputted";
+            $valid = false;
         } elseif (strlen($inputtedMake) > 12) {
             echo "Make is too long";
+            $valid = false;
         }
     }
 
@@ -53,8 +58,10 @@
         $inputtedModel = $_POST['model'];
         if (strlen($inputtedModel) == 0) {
             echo "no model inputted";
+            $valid = false;
         } elseif (strlen($inputtedModel) > 12) {
             echo "Model is too long";
+            $valid = false;
         }
     }
 
@@ -62,18 +69,25 @@
         $inputtedCommissioned = $_POST['commissioned'];
         if (strlen($inputtedCommissioned) == 0) {
             echo "no date inputted";
+            $valid = false;
         } elseif (strlen($inputtedCommissioned) > 12) {
             echo "Date is too long";
-                } elseif (!preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/",$inputtedCommissioned)) {
-                    echo "Date format invalid";
+            $valid = false;
+        } elseif (!preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/", $inputtedCommissioned)) {
+            echo "Date format invalid";
+            $valid = false;
         }
     }
 
     // $iputtedModel = $_POST['model'];
     // $inputtedCommissioned = $_POST['commissioned'];
+    if ($valid == true) {
+        $insertMonitor = new MonitorModels($db);
+        $insertMonitor->insertNewMonitor($inputtedMake, $inputtedModel, $inputtedCommissioned);
+    } else {
+        echo "Not all info correct";
+    }
 
-    $insertMonitor = new MonitorModels($db);
-    $insertMonitor->insertNewMonitor($inputtedMake, $inputtedModel, $inputtedCommissioned);
 
     ?>
 </body>
