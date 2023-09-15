@@ -5,9 +5,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 
 <body>
+
+    <h1>Monitor</h1>
+
 
     <?php
 
@@ -20,31 +27,6 @@
     $db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 
     $model = new MonitorModels($db);
-
-    $monitors = $model->getAllMonitors();
-
-    foreach ($monitors as $monitor) {
-        echo "$monitor->id\n" . "$monitor->make\n" . "$monitor->model\n" . $monitor->commissioned . "<br>";
-    }
-
-    ?>
-
-    <form method="POST">
-        <label for="make">Make:</label>
-        <input type="text" id="make" name="make">
-        <label for="model">Model:</label>
-        <input type="text" id="model" name="model">
-        <label for="commissioned">Commissioned Date: e.g. 2009-01-23:</label>
-        <input type="text" id="commissioned" name="commissioned"><br>
-        <input type="submit" value="Submit">
-    </form>
-    <form method="POST">
-        <label for="id">Delete ID:</label>
-        <input type="text" id="id" name="id">
-        <input type="submit" value="Submit">
-    </form>
-
-    <?php
 
     $valid = true;
 
@@ -90,19 +72,15 @@
         $valid = false;
     }
 
-    // $iputtedModel = $_POST['model'];
-    // $inputtedCommissioned = $_POST['commissioned'];
-    if ($valid == true) {
-        $insertMonitor = new MonitorModels($db);
-        $insertMonitor->insertNewMonitor($inputtedMake, $inputtedModel, $inputtedCommissioned);
-    } else {
-        echo "Not all info correct";
+
+    if ((isset($_POST['make'])) || (isset($_POST['model'])) || (isset($_POST['commissioned']))) {
+        if ($valid == true) {
+            $insertMonitor = new MonitorModels($db);
+            $insertMonitor->insertNewMonitor($inputtedMake, $inputtedModel, $inputtedCommissioned);
+        } else {
+            echo "Not all info correct";
+        }
     }
-
-
-    ?>
-
-    <?php
 
     $validDelete = true;
     if (isset($_POST['id'])) {
@@ -114,16 +92,45 @@
             echo "ID is too long";
             $validDelete = false;
         }
+    } else {
+        $validDelete = false;
     }
 
-    var_dump($_POST);
-    if ($validDelete == true) {
-        $removeMonitor = new MonitorModels($db);
-        $removeMonitor->removeMonitor($inputtedId);
-    } else {
-        echo "Not all info correct to delete";
+    // var_dump($_POST);
+    if (isset($_POST['id'])) {
+        if ($validDelete == true) {
+            $removeMonitor = new MonitorModels($db);
+            $removeMonitor->removeMonitor($inputtedId);
+        } else {
+            echo "Not all info correct to delete";
+        }
     }
+
+    $monitors = $model->getAllMonitors();
+
+    foreach ($monitors as $monitor) {
+        echo "$monitor->id\n" . "$monitor->make\n" . "$monitor->model\n" . $monitor->commissioned . "<br>";
+    }
+
     ?>
+
+    <form method="POST">
+        <label for="make">Make:</label>
+        <input type="text" id="make" name="make">
+        <label for="model">Model:</label>
+        <input type="text" id="model" name="model">
+        <label for="commissioned">Commissioned Date: e.g. 2009-01-23:</label>
+        <input type="text" id="commissioned" name="commissioned"><br>
+        <input type="submit" value="Submit">
+    </form>
+    <form method="POST">
+        <label for="id">Delete ID:</label>
+        <input type="number" id="id" name="id">
+        <input type="submit" value="Submit">
+    </form>
+
+
+
 
 </body>
 
