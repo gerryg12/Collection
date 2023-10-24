@@ -13,7 +13,7 @@
 
 <body>
 
-    <h1>Monitor</h1>
+    <h1>Monitor List</h1>
 
 
     <?php
@@ -106,29 +106,49 @@
         }
     }
 
-    $monitors = $model->getAllMonitors();
 
-    foreach ($monitors as $monitor) {
-        echo "$monitor->id\n" . "$monitor->make\n" . "$monitor->model\n" . $monitor->commissioned . "<br>";
-    }
 
     ?>
 
+  <div class="about">
+    <h2>Current Monitor List</h2>
+  </div>
+
+
+  <div class="test">
+  <?php
+
+$monitors = $model->getAllMonitors();
+
+foreach ($monitors as $monitor) {
+    echo "$monitor->id\n" . "$monitor->make\n" . "$monitor->model\n" . $monitor->commissioned . "<br>";
+}
+?>
+</div>
+  
+<div class="addmodel">
+<!-- <p>Please add monitor</p> -->
     <form method="POST">
+    <p class="monitorask">Please add monitor<br></p>
         <label for="make">Make:</label>
         <input type="text" id="make" name="make">
         <label for="model">Model:</label>
         <input type="text" id="model" name="model">
         <label for="commissioned">Commissioned Date: e.g. 2009-01-23:</label>
-        <input type="text" id="commissioned" name="commissioned"><br>
+        <input type="text" id="commissioned" name="commissioned">
         <input type="submit" value="Submit">
     </form>
+</div>
+
+
+<div class="delete">
+    <p>Select Monitor ID to delete</p><br>
     <form method="POST">
-        <label for="id">Delete ID:</label>
+        <label for="id">:</label>
         <input type="number" id="id" name="id">
         <input type="submit" value="Submit">
     </form>
-
+</div>
 
 
 
